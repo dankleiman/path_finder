@@ -22,28 +22,28 @@ def path_finder(value, structure, path="")
         i += 1
          # binding.pry
     end
-  elsif structure.class == Hash
-    #hash loop
-    structure.each do |key, kvalue|
-      if value == kvalue
-        if key.class == Symbol
-          path.insert(0, "[:#{structure.key(value)}]")
-        else
-          path.insert(0, "[\"#{structure.key(value)}\"]")
-        end
-        # binding.pry
-        return path
-       else
-        #should jump into recursion here
-        path = path_finder(value, kvalue, path)
-        # binding.pry
-        # if key.class == Symbol
-        #   path.insert(0, "[:#{structure.key(value)}]")
-        # else
-        #   path.insert(0, "[\"#{structure.key(value)}\"]")
-        # end
-      end
-    end
+  # elsif structure.class == Hash
+  #   #hash loop
+  #   structure.each do |key, kvalue|
+  #     if value == kvalue
+  #       if key.class == Symbol
+  #         path.insert(0, "[:#{structure.key(value)}]")
+  #       else
+  #         path.insert(0, "[\"#{structure.key(value)}\"]")
+  #       end
+  #       # binding.pry
+  #       return path
+  #      else
+  #       #should jump into recursion here
+  #       path = path_finder(value, kvalue, path)
+  #       # binding.pry
+  #       # if key.class == Symbol
+  #       #   path.insert(0, "[:#{structure.key(value)}]")
+  #       # else
+  #       #   path.insert(0, "[\"#{structure.key(value)}\"]")
+  #       # end
+  #     end
+  #   end
   else
       return path
   end
@@ -59,5 +59,9 @@ favorite_movies = [
 
 favorite_movies = { "title" => 'The Big Lebowski', year_released: 1998, director: 'Joel Coen', imdb_rating: 8.2 }
 
+
+favorite_movies = [[['title','The Big Lebowski'], ['year_released', 1998], ['director', 'Joel Coen']],
+  [['title', 'The Shining'],['year_released', 1980], ['director', 'Stanley Kubrick']],
+  [['title', 'Troll 2'],['year_released', 1990], ['director', 'Claudio Fragasso']]]
 
 puts path_finder('Joel Coen', favorite_movies)
