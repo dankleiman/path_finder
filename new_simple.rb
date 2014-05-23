@@ -5,21 +5,20 @@ def path_finder(value, structure, path = [])
     if structure.respond_to?(:each)
       structure.each do |element|
         if element == value
-          # correct_branch = true
-          path << structure.index(element)
+          path << "[#{structure.index(element)}]"
           path << true
         else
-          # path << false
+          path << false
           path_finder(value, element, path)
         end
       end
     else
       if structure == value
-        path << "We got here on 16"
+        path << "[#{structure.index(element)}]"
         path << true
       else
         # path << "We got here on 20"
-        # path << false
+        path << false
       end
     end
   else
@@ -27,21 +26,28 @@ def path_finder(value, structure, path = [])
         structure.each do |element|
           path = path_finder(value, element, path)
           if path.last == true
-            path.insert(0, structure.index(element))
+            path.insert(0, "[#{structure.index(element)}]")
           end
         end
     else
-     # path << false
+     path << false
     end
   end
   path
 end
 
-# favorite_movies = [[['title','The Big Lebowski'], ['year_released', '1998'], ['director', 'Joel Coen']],
-#   [['title', 'The Shining'],['year_released', '1980'], ['director', 'Stanley Kubrick']],
-#   [['title', 'Troll 2'],['year_released', '1990'], ['director', 'Claudio Fragasso']]]
+def path_cleanup(raw_path)
+  clean_path = ""
+  raw_path.reject!{|i| i == false || i == true}
+  clean_path = raw_path.join
+end
+favorite_movies = [[['title','The Big Lebowski'], ['year_released', '1998'], ['director', 'Joel Coen']],
+  [['title', 'The Shining'],['year_released', '1980'], ['director', 'Stanley Kubrick']],
+  [['title', 'Troll 2'],['year_released', '1990'], ['director', 'Claudio Fragasso']]]
 
-favorite_movies = [['title','The Big Lebowski'], ['year_released', '1998'], ['director', 'Joel Coen']]
+# favorite_movies = [['title','The Big Lebowski'], ['year_released', '1998'], ['director', 'Joel Coen']]
 # favorite_movies = 'apple pie'
 
-puts path_finder('The Big Lebowski', favorite_movies).inspect
+raw_path = path_finder('The Shining', favorite_movies)
+puts raw_path.inspect
+puts "Enter this path to access your element: #{path_cleanup(raw_path)}"
