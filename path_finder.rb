@@ -37,7 +37,12 @@ def path_finder(value, structure, path = [])
          structure.each do |element_key, element_value|
           if !path.include?(true)
             #once we've captured "true", we don't need to add to the path anymore
-            path << element_key
+            # binding.pry
+            if element_key.class == Symbol
+              path << ":#{element_key}"
+            else
+              path << "\"#{element_key}\""
+            end
           end
           if element_value == value
             path << true
@@ -71,7 +76,7 @@ end
 favorite_movies = [
   { title: 'The Big Lebowski', year_released: 1998, director: 'Joel Coen', imdb_rating: 8.2 },
   { title: 'The Shining', year_released: 1980, director: 'Stanley Kubrick', imdb_rating: 8.5 },
-  { title: 'Troll 2', year_released: 1990, director: 'Claudio Fragasso', imdb_rating: 2.5 }
+  { title: 'Troll 2', year_released: 1990, "director" => 'Claudio Fragasso', imdb_rating: 2.5 }
 ]
 
 raw_path = path_finder('Claudio Fragasso', favorite_movies)
