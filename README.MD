@@ -19,3 +19,5 @@ Later versions will hopefully include:
 + Support for CSV file access to a data set.
 
 Questions and feedback welcome!
+
+Thanks.
