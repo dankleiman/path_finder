@@ -1,11 +1,5 @@
 require 'pry'
 
-#####################################################
-# Given a value and a multi-dimensional array,      #
-# returns the position in the array strucure,       #
-# formatted so you can referrence it in your code   #
-#####################################################
-
 def path_finder(value, structure, path = [])
   #i tracks the index of the current array
   i = 0
@@ -59,4 +53,5 @@ favorite_movies = [[['title','The Big Lebowski'], ['year_released', '1998'], ['d
 # favorite_movies = 'apple pie'
 
 raw_path = path_finder(1980, favorite_movies)
+puts raw_path.inspect
 puts "Enter this path to access your element: favorite_movies#{path_cleanup(raw_path)}"

@@ -13,6 +13,7 @@ def path_finder(value, structure, path = [])
         if element == value
           path << "[#{structure.index(element)}]"
           path << true
+          puts "Success at 16"
           # return true
         else
           path = path_finder(value, element, path)
@@ -57,15 +58,16 @@ end
 
 
 
-# favorite_movies = [[['title','The Big Lebowski'], ['year_released', '1998'], ['director', 'Joel Coen']],
-#   [['title', 'The Shining'],['year_released', '1980'], ['director', 'Stanley Kubrick']],
-#   [['title', 'Troll 2'],['year_released', '1990'], ['director', 'Claudio Fragasso']]]
+favorite_movies = [[['title','The Big Lebowski'], ['year_released', '1998'], ['director', 'Joel Coen']],
+  [['title', 'The Shining'],['year_released', '1980'], ['director', 'Stanley Kubrick']],
+  [['title', 'Troll 2'],['year_released', '1990'], ['director', 'Claudio Fragasso']]]
 
-favorite_movies = [['title','The Big Lebowski'], ['year_released', '1998']]
+# favorite_movies = [['title','The Big Lebowski'], ['year_released', '1998']]
 # favorite_movies = 'apple pie'
 
-raw_path = path_finder('year_released', favorite_movies)
+raw_path = path_finder('Troll 2', favorite_movies)
 puts raw_path.inspect
 puts raw_path.length
 puts favorite_movies.flatten.length
+puts favorite_movies[2][0][1]
 puts "Enter this path to access your element: #{path_cleanup(raw_path)}"
