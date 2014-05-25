@@ -1,8 +1,8 @@
 require 'pry'
 
 #####################################################
-# Given a value and a multi-dimensional array,      #
-# returns the position in the array strucure,       #
+# Given a value and a compound data structure,      #
+# returns the position in the strucure,       #
 # formatted so you can referrence it in your code   #
 #####################################################
 
@@ -75,5 +75,4 @@ favorite_movies = [
 ]
 
 raw_path = path_finder('Claudio Fragasso', favorite_movies)
-puts raw_path.inspect
 puts "Enter this path to access your element: favorite_movies#{path_cleanup(raw_path)}"
