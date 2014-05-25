@@ -18,7 +18,7 @@ def path_finder(value, structure, path = [])
       #test each element of the array
       structure.each do |element|
         if !path.include?(true)
-        path << i
+          path << i
         end
         if element == value
           path << true
