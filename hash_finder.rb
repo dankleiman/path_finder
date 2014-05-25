@@ -29,7 +29,6 @@ def path_finder(value, structure, path = [])
             path.pop
           end
         end
-        #before you test the next element, add 1 to track the index
       end
     else
       return path
