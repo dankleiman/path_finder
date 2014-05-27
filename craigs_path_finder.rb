@@ -76,22 +76,19 @@ def path_finder(value, structure, path = [], paths=[])
  paths
 end
 
-#############
-# IDEA
-# array.keep_if {|each_array| each_array.last == value }
-#############
-
 def path_cleanup(raw_path)
   clean_path = ""
-  raw_path.pop
-  raw_path.each do |marker|
-    clean_path += "[#{marker}]"
+  raw_path.each do |each_array|
+    each_array.pop
+    each_array.each do |marker|
+      clean_path += "[#{marker}]"
+    end
+    clean_path += "\n"
   end
   clean_path
 end
 
-
 favorite_movies = [{title: 'ET', year: '1986', stuff: {cast: ['nobody', 'nobody', 'nobody', 'nobody', 'ET'], name: 'ET'}}, {title: 'BT', year: '1990', name: 'ET'}]
 raw_path = path_finder('ET', favorite_movies)
-puts raw_path.inspect
-# puts path_cleanup(raw_path)
+
+puts path_cleanup(raw_path)
