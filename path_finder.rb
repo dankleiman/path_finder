@@ -79,5 +79,5 @@ favorite_movies = [
   { title: 'Troll 2', year_released: 1990, "director" => 'Claudio Fragasso', imdb_rating: 2.5 }
 ]
 
-raw_path = path_finder('Claudio Fragasso', favorite_movies)
+raw_path = path_finder('Joel Coen', favorite_movies)
 puts "Enter this path to access your element: favorite_movies#{path_cleanup(raw_path)}"
