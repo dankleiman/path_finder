@@ -5,18 +5,17 @@ Given a value and a compound data structure, returns the position in the strucur
 
 How to use this tool:
 
-+ The program runs from "path_finder.rb" (all other files will be cleaned up -- just test files)
++ To find a single, unique value, run the program from "path_finder.rb"
++ To display multiple paths for a value, run the program from "craigs_path_finder.rb"
 + There is no UI, yet.
 + Update "favorite_movies" on line 71 with your data structure
 + Update the parameters for "raw_path = pathfinder(THE VALUE YOU WANT TO FIND, YOUR DATA STRUCTURE)"
 
-Currently, the program returns the first instance of your value.
-
 Later versions will hopefully include:
 
-+ Returns for all occurences of your value.
 + An interface that allows you to enter the value when you run the program.
 + Support for CSV file access to a data set.
++ a gem you can include in your rails project
 
 Questions and feedback welcome!
 
