@@ -23,7 +23,17 @@ def path_finder(value, structure, path = [], paths=[])
           if !path.include?(true)
             path << i
           end
-          if element == value
+          if element.class == String && value.class == String
+            if element.include?(value.to_s)
+              path << true
+              paths << path.dup
+              while path.include?(i)
+                path.pop
+              end
+            else
+              path.pop
+            end
+          elsif element == value
             path << true
             paths << path.dup
             # binding.pry
@@ -51,7 +61,20 @@ def path_finder(value, structure, path = [], paths=[])
               path << "\"#{element_key}\""
             end
           end
-          if element_value == value
+          if element_value.class == String && value.class == String
+            if element_value.include?(value)
+              path << true
+              paths << path.dup
+              while path.include?(":#{element_key}")
+                path.pop
+              end
+              while path.include?("\"#{element_key}\"")
+                path.pop
+              end
+            else
+              path.pop
+            end
+          elsif element_value == value
             path << true
             paths << path.dup
             while path.include?(":#{element_key}")
