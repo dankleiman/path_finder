@@ -74,7 +74,7 @@ def path_finder(value, structure, path = [], paths=[])
             else
               path.pop
             end
-          elsif element_value == value
+          elsif element_value == value || element_key == value
             path << true
             paths << path.dup
             while path.include?(":#{element_key}")
@@ -112,6 +112,6 @@ def path_cleanup(raw_path)
 end
 
 favorite_movies = [{title: 'ET', year: '1986', stuff: {cast: ['nobody', 'nobody', 'nobody', 'nobody', 'ET'], name: 'ET'}}, {title: 'BT', year: '1990', name: 'ET'}]
-raw_path = path_finder('ET', favorite_movies)
+raw_path = path_finder(:year, favorite_movies)
 
 puts path_cleanup(raw_path)
