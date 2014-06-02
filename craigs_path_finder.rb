@@ -15,7 +15,6 @@ def path_finder(value, structure, path = [], paths=[])
     path.pop
   end
   if !path.include?(true)
-    # binding.pry
     if structure.respond_to?(:each)
       if structure.class == Array
       #test each element of the array
@@ -27,19 +26,14 @@ def path_finder(value, structure, path = [], paths=[])
             if element.include?(value.to_s)
               path << true
               paths << path.dup
-              while path.include?(i)
-                path.pop
-              end
+              path.pop(2)
             else
               path.pop
             end
           elsif element == value
             path << true
             paths << path.dup
-            # binding.pry
-            while path.include?(i)
-              path.pop
-            end
+            path.pop(2)
           else
             paths = path_finder(value, element, path, paths)
             if !path.include?(true)
@@ -65,24 +59,14 @@ def path_finder(value, structure, path = [], paths=[])
             if element_value.include?(value)
               path << true
               paths << path.dup
-              while path.include?(":#{element_key}")
-                path.pop
-              end
-              while path.include?("\"#{element_key}\"")
-                path.pop
-              end
+              path.pop(2)
             else
               path.pop
             end
           elsif element_value == value || element_key == value
             path << true
             paths << path.dup
-            while path.include?(":#{element_key}")
-              path.pop
-            end
-            while path.include?("\"#{element_key}\"")
-              path.pop
-            end
+            path.pop(2)
           else
             paths = path_finder(value, element_value, path, paths)
             if !path.include?(true)
@@ -112,6 +96,6 @@ def path_cleanup(raw_path)
 end
 
 favorite_movies = [{title: 'ET', year: '1986', stuff: {cast: ['nobody', 'nobody', 'nobody', 'nobody', 'ET'], name: 'ET'}}, {title: 'BT', year: '1990', name: 'ET'}]
-raw_path = path_finder(:year, favorite_movies)
+raw_path = path_finder('nobody', favorite_movies)
 
 puts path_cleanup(raw_path)
