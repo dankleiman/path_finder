@@ -1,13 +1,6 @@
 require 'pry'
 
-#####################################################
-# Given a value and a compound data structure,      #
-# returns the position in the strucure,       #
-# formatted so you can referrence it in your code   #
-#####################################################
-
 def path_finder(value, structure, path = [], paths=[])
-  #i tracks the index of the current array
   i = 0
   if value == structure
     path << true
@@ -16,14 +9,11 @@ def path_finder(value, structure, path = [], paths=[])
   end
   if !path.include?(true)
     if structure.respond_to?(:each)
-      if structure.class == Array
-      #test each element of the array
+      if structure.class <= Array
         structure.each do |element|
-          if !path.include?(true)
-            path << i
-          end
+          path << i
           if element.class == String && value.class == String
-            if element.include?(value.to_s)
+            if element =~ /\b#{Regexp.quote(value)}\b/i
               path << true
               paths << path.dup
               path.pop(2)
@@ -37,26 +27,20 @@ def path_finder(value, structure, path = [], paths=[])
           else
             paths = path_finder(value, element, path, paths)
             if !path.include?(true)
-              #if path comes back from a false branch, remove the last part
               path.pop
             end
           end
-          #before you test the next element, add 1 to track the index
           i+=1
         end
       else
         structure.each do |element_key, element_value|
-          if !path.include?(true)
-            #once we've captured "true", we don't need to add to the path anymore
-            # binding.pry
-            if element_key.class == Symbol
-              path << ":#{element_key}"
-            else
-              path << "\"#{element_key}\""
-            end
+          if element_key.class == Symbol
+            path << ":#{element_key}"
+          else
+            path << "\"#{element_key}\""
           end
           if element_value.class == String && value.class == String
-            if element_value.include?(value)
+            if element_value =~ /\b#{Regexp.quote(value)}\b/i
               path << true
               paths << path.dup
               path.pop(2)
@@ -70,7 +54,6 @@ def path_finder(value, structure, path = [], paths=[])
           else
             paths = path_finder(value, element_value, path, paths)
             if !path.include?(true)
-              #if path comes back from a false branch, remove the last part
               path.pop
             end
           end
@@ -96,6 +79,6 @@ def path_cleanup(raw_path)
 end
 
 favorite_movies = [{title: 'ET', year: '1986', stuff: {cast: ['nobody', 'nobody', 'nobody', 'nobody', 'ET'], name: 'ET'}}, {title: 'BT', year: '1990', name: 'ET'}]
-raw_path = path_finder('nobody', favorite_movies)
+raw_path = path_finder('ET', favorite_movies)
 
 puts path_cleanup(raw_path)
