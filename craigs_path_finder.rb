@@ -12,26 +12,22 @@ def path_finder(value, structure, path = [], paths=[])
       if structure.class <= Array
         structure.each do |element|
           path << i
-          if value.class == String
-            if element.class == String
-              if element =~ /\b#{Regexp.quote(value)}\b/i
-                path << true
-                paths << path.dup
-                path.pop(2)
-              else
-                path.pop
-              end
-            end
-          else
-            if element == value
+          if element.class == String && value.class == String
+            if element =~ /\b#{Regexp.quote(value)}\b/i
               path << true
               paths << path.dup
               path.pop(2)
             else
-              paths = path_finder(value, element, path, paths)
-              if !path.include?(true)
-                path.pop
-              end
+              path.pop
+            end
+          elsif element == value
+            path << true
+            paths << path.dup
+            path.pop(2)
+          else
+            paths = path_finder(value, element, path, paths)
+            if !path.include?(true)
+              path.pop
             end
           end
           i+=1
@@ -43,35 +39,22 @@ def path_finder(value, structure, path = [], paths=[])
           else
             path << "\"#{element_key}\""
           end
-          if value.class == String
-            if element_value.class == String
-              if element_value =~ /\b#{Regexp.quote(value)}\b/i
-                path << true
-                paths << path.dup
-                path.pop(2)
-              else
-                path.pop
-              end
-            end
-            if element_key.class == String
-              if element_key =~ /\b#{Regexp.quote(value)}\b/i
-                path << true
-                paths << path.dup
-                path.pop(2)
-              else
-                path.pop
-              end
-            end
-          else
-            if element_key == value || element_value == value
+          if element_value.class == String && value.class == String
+            if element_value =~ /\b#{Regexp.quote(value)}\b/i
               path << true
               paths << path.dup
               path.pop(2)
             else
-              paths = path_finder(value, element_value, path, paths)
-              if !path.include?(true)
-                path.pop
-              end
+              path.pop
+            end
+          elsif element_value == value || element_key == value
+            path << true
+            paths << path.dup
+            path.pop(2)
+          else
+            paths = path_finder(value, element_value, path, paths)
+            if !path.include?(true)
+              path.pop
             end
           end
         end
@@ -95,7 +78,7 @@ def path_cleanup(raw_path)
   clean_path
 end
 
-favorite_movies = [{ "title" => 'http://www.poop.com', year: '1986', stuff: {cast: ['nobody', 'nobody', 'nobody', 'nobody', 'ET'], name: 'ET'}}, {title: 'BT', year: '1990', name: 'ET'}]
-raw_path = path_finder('1986', favorite_movies)
+favorite_movies = [{title: 'ET', year: '1986', stuff: {cast: ['nobody', 'nobody', 'nobody', 'nobody', 'ET'], name: 'ET'}}, {title: 'BT', year: '1990', name: 'ET'}]
+raw_path = path_finder('ET', favorite_movies)
 
 puts path_cleanup(raw_path)
