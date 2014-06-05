@@ -1,84 +1,31 @@
-require 'pry'
+# require 'pry'
 
-def path_finder(value, structure, path = [], paths=[])
-  i = 0
-  if value == structure
-    path << true
-    paths << path.dup
-    path.pop
-  end
-  if !path.include?(true)
-    if structure.respond_to?(:each)
-      if structure.class <= Array
-        structure.each do |element|
-          path << i
-          if element.class == String && value.class == String
-            if element =~ /\b#{Regexp.quote(value)}\b/i
-              path << true
-              paths << path.dup
-              path.pop(2)
-            else
-              path.pop
-            end
-          elsif element == value
-            path << true
-            paths << path.dup
-            path.pop(2)
-          else
-            paths = path_finder(value, element, path, paths)
-            if !path.include?(true)
-              path.pop
-            end
-          end
-          i+=1
-        end
+def path_finder(value, structure, current_path = "", paths=[])
+  if value.class == String && structure.class == String
+    if structure =~ /\b#{Regexp.quote(value)}\b/i
+      paths << current_path
+    end
+  elsif value == structure
+    paths << current_path
+  elsif structure.is_a?(Array)
+    structure.each_with_index do |element, index|
+      paths = path_finder(value, element, current_path + "[#{index}]", paths)
+    end
+  elsif structure.is_a?(Hash)
+    structure.each do |key, element|
+      if key.class == Symbol
+        paths = path_finder(value, key, current_path + "[:#{key}]", paths)
+        paths = path_finder(value, element, current_path + "[:#{key}]", paths)
       else
-        structure.each do |element_key, element_value|
-          if element_key.class == Symbol
-            path << ":#{element_key}"
-          else
-            path << "\"#{element_key}\""
-          end
-          if element_value.class == String && value.class == String
-            if element_value =~ /\b#{Regexp.quote(value)}\b/i
-              path << true
-              paths << path.dup
-              path.pop(2)
-            else
-              path.pop
-            end
-          elsif element_value == value || element_key == value
-            path << true
-            paths << path.dup
-            path.pop(2)
-          else
-            paths = path_finder(value, element_value, path, paths)
-            if !path.include?(true)
-              path.pop
-            end
-          end
-        end
+        paths = path_finder(value, key, current_path + "['#{key}']", paths)
+        paths = path_finder(value, element, current_path + "['#{key}']", paths)
       end
-    else
-      return paths
     end
   end
- paths
+  paths
 end
 
-def path_cleanup(raw_path)
-  clean_path = ""
-  raw_path.each do |each_array|
-    each_array.pop
-    each_array.each do |marker|
-      clean_path += "[#{marker}]"
-    end
-    clean_path += "\n"
-  end
-  clean_path
-end
+data = {"total"=>134, "movies"=>[{"id"=>"771304593", "title"=>"Maleficent", 'year' => 2014, "mpaa_rating"=>"PG", "runtime"=>97, "critics_consensus"=>"Angelina Jolie's magnetic performance outshines Maleficent's dazzling special effects; unfortunately, the movie around them fails to justify all that impressive effort.", "release_dates"=>{"theater"=>"2014-05-30"}, "ratings"=>{"critics_rating"=>"Rotten", "critics_score"=>50, "audience_rating"=>"Upright", "audience_score"=>76}, "synopsis"=>"\"Maleficent\" explores the untold story of Disney's most iconic villain from the classic \"Sleeping Beauty\" and the elements of her betrayal that ultimately turn her pure heart to stone. Driven by revenge and a fierce desire to protect the moors over which she presides, Maleficent cruelly places an irrevocable curse upon the human king's newborn infant Aurora. As the child grows, Aurora is caught in the middle of the seething conflict between the forest kingdom she has grown to love and the human kingdom that holds her legacy. Maleficent realizes that Aurora may hold the key to peace in the land and is forced to take drastic actions that will change both worlds forever. (c) Walt Disney Pictures", "posters"=>{"thumbnail"=>"http://content8.flixster.com/movie/11/17/67/11176742_mob.jpg", "profile"=>"http://content8.flixster.com/movie/11/17/67/11176742_pro.jpg", "detailed"=>"http://content8.flixster.com/movie/11/17/67/11176742_det.jpg", "original"=>"http://content8.flixster.com/movie/11/17/67/11176742_ori.jpg"}, "abridged_cast"=>[{"name"=>"Angelina Jolie", "id"=>"162652626", "characters"=>["Maleficent"]}, {"name"=>"Sharlto Copley", "id"=>"770674319", "characters"=>["Stefan"]}, {"name"=>"Elle Fanning", "id"=>"528361349", "characters"=>["Princess Aurora"]}, {"name"=>"Sam Riley", "id"=>"770673828", "characters"=>["Diaval"]}, {"name"=>"Imelda Staunton", "id"=>"162693364", "characters"=>["Knotgrass"]}], "alternate_ids"=>{"imdb"=>"1587310"}, "links"=>{"self"=>"http://api.rottentomatoes.com/api/public/v1.0/movies/771304593.json", "alternate"=>"http://www.rottentomatoes.com/m/maleficent_2014/", "cast"=>"http://api.rottentomatoes.com/api/public/v1.0/movies/771304593/cast.json", "clips"=>"http://api.rottentomatoes.com/api/public/v1.0/movies/771304593/clips.json", "reviews"=>"http://api.rottentomatoes.com/api/public/v1.0/movies/771304593/reviews.json", "similar"=>"http://api.rottentomatoes.com/api/public/v1.0/movies/771304593/similar.json"}}]}
 
-favorite_movies = [{title: 'ET', year: '1986', stuff: {cast: ['nobody', 'nobody', 'nobody', 'nobody', 'ET'], name: 'ET'}}, {title: 'BT', year: '1990', name: 'ET'}]
-raw_path = path_finder('ET', favorite_movies)
-
-puts path_cleanup(raw_path)
+raw_path = path_finder('Maleficent', data)
+puts raw_path
