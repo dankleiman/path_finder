@@ -7,11 +7,11 @@ def path_finder(value, structure, current_path = "")
     end
   elsif value == structure
     return current_path
-  elsif structure.is_a?(Array)
+  elsif structure.class <= Array
     structure.each_with_index do |element, index|
       paths << path_finder(value, element, current_path + "[#{index}]")
     end
-  elsif structure.is_a?(Hash)
+  elsif structure.class <= Hash
     structure.each do |key, element|
       if key.class == Symbol
         paths << path_finder(value, key, current_path + "[:#{key}]")
