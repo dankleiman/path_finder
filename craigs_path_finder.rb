@@ -16,7 +16,6 @@ def path_finder(value, structure, current_path = "", paths = [])
     paths << current_path
   elsif structure.is_a?(Array)
     structure.each_with_index do |element, index|
-      # paths << recursive_search(value, element, (current_path + "[#{index}]"), paths)
       if path_finder(value, element, current_path + "[#{index}]") != nil
         paths << path_finder(value, element, current_path + "[#{index}]")
       end

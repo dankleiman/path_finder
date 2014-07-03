@@ -1,26 +1,38 @@
-def path_finder(value, structure, current_path = "")
-  paths = []
+def path_finder(value, structure, current_path = "", paths = [])
 
   if value.class == String && structure.class == String
     if structure =~ /\b#{Regexp.quote(value)}\b/i
-      return current_path
+      paths << current_path
     end
   elsif value == structure
-    return current_path
+    paths << current_path
   elsif structure.class <= Array
     structure.each_with_index do |element, index|
-      paths << path_finder(value, element, current_path + "[#{index}]")
+      if path_finder(value, element, current_path + "[#{index}]") != nil
+        paths << path_finder(value, element, current_path + "[#{index}]")
+      end
     end
   elsif structure.class <= Hash
     structure.each do |key, element|
       if key.class == Symbol
-        paths << path_finder(value, key, current_path + "[:#{key}]")
-        paths << path_finder(value, element, current_path + "[:#{key}]")
+        if path_finder(value, key, current_path + "[:#{key}]") != nil
+          paths << path_finder(value, key, current_path + "[:#{key}]")
+        end
+        if path_finder(value, element, current_path + "[:#{key}]") != nil
+          paths << path_finder(value, element, current_path + "[:#{key}]")
+        end
       else
-        paths << path_finder(value, key, current_path + "['#{key}']")
-        paths << path_finder(value, element, current_path + "['#{key}']")
+        if path_finder(value, key, current_path + "['#{key}']") != nil
+          paths << path_finder(value, key, current_path + "['#{key}']")
+        end
+        if path_finder(value, element, current_path + "['#{key}']") != nil
+          paths << path_finder(value, element, current_path + "['#{key}']")
+        end
       end
     end
+  else
+    return nil
   end
-  paths
+  paths.flatten
 end
+
